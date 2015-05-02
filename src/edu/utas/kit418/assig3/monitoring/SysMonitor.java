@@ -14,6 +14,9 @@ import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
+import edu.utas.kit418.assig3.network.ProtocolWrapper;
+import edu.utas.kit418.assig3.network.ProtocolWrapper.CODE;
+
 public class SysMonitor extends TimerTask {
 //http://www.coderpanda.com/java-socket-programming-transferring-java-object-through-socket-using-udp/
 	private Timer timer;
@@ -42,6 +45,9 @@ public class SysMonitor extends TimerTask {
 	@Override
 	public void run() {
 		SystemInfo sysInfo = retrieveSysInfo();
+		ProtocolWrapper pw = new ProtocolWrapper();
+		pw.sysInfo = sysInfo;
+		pw.code = CODE.SYSINFO;
 //		sysInfo.print();
 		try {
 			objOs.writeObject(sysInfo);
@@ -73,7 +79,4 @@ public class SysMonitor extends TimerTask {
 	public void stop() {
 		timer.cancel();
 	}
-	
-	
-
 }

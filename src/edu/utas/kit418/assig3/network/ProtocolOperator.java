@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import edu.utas.kit418.assig3.network.ProtocolWrapper.STATUS;
+import edu.utas.kit418.assig3.network.ProtocolWrapper.CODE;
 
 public class ProtocolOperator {
 
@@ -19,7 +19,7 @@ public class ProtocolOperator {
 
 	public void sendReady() throws IOException {
 		ProtocolWrapper pe = new ProtocolWrapper();
-		pe.code = STATUS.READY;
+		pe.code = CODE.READY;
 			objO.writeObject(pe);
 	}
 

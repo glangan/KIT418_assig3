@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import edu.utas.kit418.assig3.monitoring.SysMonitor;
 import edu.utas.kit418.assig3.network.ProtocolOperator;
 import edu.utas.kit418.assig3.network.ProtocolWrapper;
+import edu.utas.kit418.assig3.network.ProtocolWrapper.CODE;
 import edu.utas.kit418.assig3.task.TaskResult;
 import edu.utas.kit418.assig3.worker.WorkerManager;
 
@@ -37,7 +38,7 @@ public class Entry {
 		sysMonitor = new SysMonitor(serverIP, serverPort);
 		sysMonitor.start();
 
-		Thread.sleep(100000);
+//		Thread.sleep(100000);
 
 		boolean ok = connectToServer(serverIP, serverPort);
 		if (!ok) {
@@ -56,6 +57,7 @@ public class Entry {
 			if (result != null) {
 				ProtocolWrapper pe = new ProtocolWrapper();
 				pe.taskResult = result;
+				pe.code = CODE.TASKRESULT;
 				pOperator.backResult(pe);
 			}
 		}
