@@ -17,20 +17,26 @@ public class ProtocolOperator {
 		objO = new ObjectOutputStream(c.getOutputStream());
 	}
 
-	public void sendReady() throws IOException {
+	public void readyToWork() throws IOException {
 		ProtocolWrapper pe = new ProtocolWrapper();
-		pe.code = CODE.READY;
+		pe.code = CODE.READYTOWORK;
 			objO.writeObject(pe);
 	}
 
+	public void sysStartUp() throws IOException {
+		ProtocolWrapper pe = new ProtocolWrapper();
+		pe.code = CODE.SYSSTARTUP;
+			objO.writeObject(pe);
+	}
 	public ProtocolWrapper requestTask() throws ClassNotFoundException, IOException {
 		ProtocolWrapper pe = null;
-			pe = (ProtocolWrapper) objI.readObject();
+			pe = (ProtocolWrapper) objI.readObject(); // need NIO
 		return pe;
 	}
 
 	public void backResult(ProtocolWrapper pe) throws IOException {
 		objO.writeObject(pe);
 	}
+
 
 }

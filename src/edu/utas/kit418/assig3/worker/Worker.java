@@ -1,5 +1,6 @@
 package edu.utas.kit418.assig3.worker;
 
+import edu.utas.kit418.assig3.Node;
 import edu.utas.kit418.assig3.task.TASKTYPE;
 import edu.utas.kit418.assig3.task.Task;
 import edu.utas.kit418.assig3.task.TaskResult;
@@ -24,8 +25,9 @@ public class Worker implements Runnable {
 		result = new TaskResult();
 		result.taskId = taskid;
 		result.type = taskType;
-		result.content = ""; //TODO: put serialized result content
+		result.content = ""; // TODO: put serialized result content
 		workerStatus = WORKERSTATUS.RESULT;
+		Node.sSync.notifyAll();
 	}
 
 	public void setTask(int id, TASKTYPE type, Task task) {

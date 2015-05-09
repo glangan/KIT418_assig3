@@ -1,27 +1,24 @@
 package edu.utas.kit418.assig3.worker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.utas.kit418.assig3.network.ProtocolWrapper;
-import edu.utas.kit418.assig3.task.TASKTYPE;
 import edu.utas.kit418.assig3.task.TaskResult;
 
 public class WorkerManager {
 
-	private List<Worker> workerList = new ArrayList<Worker>();
+	private Worker[] workerList;
 	private Worker nextWorker = null;
 
-	public WorkerManager(int numOfWorker) throws Exception {
-		if(numOfWorker <=0) throw new Exception("numOfWorker <= 0, "+numOfWorker);
-		while (numOfWorker > 0) {
-			workerList.add(new Worker());
-			numOfWorker--;
+	public WorkerManager(int totalWorker) throws Exception {
+		if (totalWorker <= 0)
+			throw new Exception("numOfWorker <= 0, " + totalWorker);
+		workerList = new Worker[totalWorker];
+		for (int i = 0; i < workerList.length; i++) {
+			workerList[i] = new Worker();
 		}
-		nextWorker = workerList.get(0);
+		nextWorker = workerList[0];
 	}
 
-	public boolean hasReadyWorker() {
+	public synchronized boolean hasReadyWorker() {
 		for (Worker next : workerList) {
 			if (next.workerStatus == Worker.WORKERSTATUS.READY) {
 				nextWorker = next;
@@ -31,21 +28,22 @@ public class WorkerManager {
 		return false;
 	}
 
-	public void startWorker(ProtocolWrapper pe) throws Exception {
-		if(nextWorker.workerStatus == Worker.WORKERSTATUS.READY) throw new Exception("Assign task on a Non-Ready worker");
-		nextWorker.setTask(pe.task.id, pe.task.type, pe.task);
+	public void startWorker(ProtocolWrapper pw) throws Exception {
+		if (nextWorker.workerStatus == Worker.WORKERSTATUS.READY)
+			throw new Exception("Assign task on a Non-Ready worker");
+		nextWorker.setTask(pw.task.id, pw.task.type, pw.task);
 		nextWorker.workerStatus = Worker.WORKERSTATUS.RUNNING;
 		new Thread(nextWorker).start();
 	}
 
 	public TaskResult getResult() {
 		for (Worker next : workerList) {
-			if(next.workerStatus == Worker.WORKERSTATUS.RESULT){
+			if (next.workerStatus == Worker.WORKERSTATUS.RESULT) {
+				next.workerStatus = Worker.WORKERSTATUS.READY;
+				TaskRequester.rSync.notifyAll();
 				return next.result;
 			}
 		}
 		return null;
 	}
 }
-
-

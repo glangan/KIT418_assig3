@@ -7,7 +7,7 @@ import edu.utas.kit418.assig3.task.TaskResult;
 public class ProtocolWrapper {
 
 	public enum CODE {
-		READY, STOP, TASK, TASKRESULT, SYSINFO
+		 STOP, TASK, SYSSTARTUP, READYTOWORK, TASKRESULT, SYSINFO
 	}
 
 	public CODE code;

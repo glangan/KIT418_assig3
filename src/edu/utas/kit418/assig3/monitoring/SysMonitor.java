@@ -48,14 +48,14 @@ public class SysMonitor extends TimerTask {
 		ProtocolWrapper pw = new ProtocolWrapper();
 		pw.sysInfo = sysInfo;
 		pw.code = CODE.SYSINFO;
-//		sysInfo.print();
-		try {
-			objOs.writeObject(sysInfo);
-			byte[] data = byteOs.toByteArray();
-			ds.send(new DatagramPacket(data, data.length, InetAddress.getByName(serverIP),serverPort));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		sysInfo.print();
+//		try {
+//			objOs.writeObject(sysInfo);
+//			byte[] data = byteOs.toByteArray();
+//			ds.send(new DatagramPacket(data, data.length, InetAddress.getByName(serverIP),serverPort));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private SystemInfo retrieveSysInfo() {
